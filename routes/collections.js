@@ -25,5 +25,24 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.post('/', async (req, res) => {
+    try {
+        // Need to validate body before continuing
+        const { error } = validateCardDeck(req.body);
+        if (error)
+            return res.status(400).send(error);
+
+        const cardDeck = new CardDeck({
+            name: req.body.name,
+            description: req.body.description,
+            cards: req.body.cards,
+        });
+        await cardDeck.save();
+        return res.send(cardDeck);
+    } catch (ex) {
+        return res.status(500).send(`Internal Server Error: ${ex}`);
+    }
+});
+
 
 module.exports = router;
