@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
+// Define cardDeck schema and data validation
 const cardDeckSchema = new mongoose.Schema({
     name: { type: String, required: true, minlength: 2, maxlength: 255 },
     description: { type: String, required: true },
@@ -12,12 +13,32 @@ const CardDeck = mongoose.model('CardDeck', cardDeckSchema);
 
 function validateCardDeck(cardDeck) {
     const schema = Joi.object({
-        name: Joi.string().min(2).max(50).required(),
+        name: Joi.string().min(2).max(255).required(),
         description: Joi.string().required(),
         cards: Joi.array(),
     });
     return schema.validate(cardDeck);
 }
+
+
+// Define cardDeck schema and data validation
+const flashCardSchema = new mongoose.Schema({
+    cardFront: { type: String, required: true, minlength: 15, maxlength: 255 },
+    cardBack: { type: String, required: true, minlength: 2, maxlength: 255 },
+    dateModified: { type: Date, default: Date.now },
+});
+
+const FlashCard = mongoose.model('FlashCard', flashCardSchema);
+
+function validateFlashCard(flashCard) {
+    const schema = Joi.object({
+        cardFront: Joi.string().min(15).max(255).required(),
+        cardBack: Joi.string().min(2).max(255).required(),
+    });
+    return schema.validate(flashCard);
+}
+
+
 
 
 exports.CardDeck = CardDeck;
