@@ -17,7 +17,7 @@ router.get('/:id', async (req, res) => {
     try {
         const cardDeck = await CardDeck.findById(req.params.id);
         if (!cardDeck)
-            return res.status(400).send(`The product with id "${req.params.id}" d
+            return res.status(400).send(`The card deck with id "${req.params.id}" d
    oes not exist.`);
         return res.send(cardDeck);
     } catch (ex) {
@@ -43,6 +43,40 @@ router.post('/', async (req, res) => {
         return res.status(500).send(`Internal Server Error: ${ex}`);
     }
 });
+
+
+// Get flashcard collection by cardDeck id
+router.get('/:id/cards', async (req, res) => {
+    try {
+        const cardDeck = await CardDeck.findById(req.params.id);
+        if (!cardDeck)
+            return res.status(400).send(`The card deck with id "${req.params.id}" d
+   oes not exist.`);
+        return res.send(cardDeck);
+    } catch (ex) {
+        return res.status(500).send(`Internal Server Error: ${ex}`);
+    }
+});
+
+
+// Get flashcard collection by cardDeck & flashCard id
+router.get('/:deckId/cards/:cardId', async (req, res) => {
+    try {
+        const cardDeck = await CardDeck.findById(req.params.deckId);
+        if (!cardDeck)
+            return res.status(400).send(`The card deck with id "${req.params.deckId}" d
+   oes not exist.`);
+        const flashCard = await FlashCard.findById(req.params.cardId);
+        if (!cardDeck)
+            return res.status(400).send(`The flashcard with id "${req.params.cardId}" d
+   oes not exist.`);
+        return res.send(cardDeck);
+    } catch (ex) {
+        return res.status(500).send(`Internal Server Error: ${ex}`);
+    }
+});
+
+
 
 
 module.exports = router;
