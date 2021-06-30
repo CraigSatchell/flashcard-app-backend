@@ -40,7 +40,9 @@ function validateFlashCard(flashCard) {
 
 
 
-
 exports.CardDeck = CardDeck;
 exports.validateCardDeck = validateCardDeck;
 exports.cardDeckSchema = cardDeckSchema;
+exports.FlashCard = FlashCard;
+exports.validateFlashCard = validateFlashCard;
+exports.flashCardSchema = flashCardSchema;
