@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
             return res.status(400).send(error);
 
         const cardDeck = new CardDeck({
-            name: req.body.name,
+            title: req.body.title,
             description: req.body.description,
             cards: req.body.cards,
         });
@@ -46,11 +46,11 @@ router.post('/', async (req, res) => {
 
 
 // Get flashcard collection by cardDeck id
-router.get('/:id/cards', async (req, res) => {
+router.get('/:deckId/cards', async (req, res) => {
     try {
-        const cardDeck = await CardDeck.findById(req.params.id);
+        const cardDeck = await CardDeck.findById(req.params.deckId);
         if (!cardDeck)
-            return res.status(400).send(`The card deck with id "${req.params.id}" d
+            return res.status(400).send(`The card deck with id "${req.params.deckId}" d
    oes not exist.`);
         return res.send(cardDeck);
     } catch (ex) {
@@ -77,8 +77,13 @@ router.get('/:deckId/cards/:cardId', async (req, res) => {
 });
 
 // Add new flashcard to selected card deck
-router.post('/:cardDeck/cards', async (req, res) => {
+router.post('/:deckId/cards', async (req, res) => {
     try {
+        const cardDeck = await CardDeck.findById(req.params.deckId);
+        if (!cardDeck)
+            return res.status(400).send(`The card deck with id "${req.params.deckId}" d
+   oes not exist.`);
+
         // Need to validate body before continuing
         const { error } = validateFlashCard(req.body);
         if (error)
