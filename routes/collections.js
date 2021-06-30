@@ -76,7 +76,24 @@ router.get('/:deckId/cards/:cardId', async (req, res) => {
     }
 });
 
+// Add new flashcard to selected card deck
+router.post('/:cardDeck/cards', async (req, res) => {
+    try {
+        // Need to validate body before continuing
+        const { error } = validateFlashCard(req.body);
+        if (error)
+            return res.status(400).send(error);
 
+        const flashCard = new FlashCard({
+            cardFront: req.body.cardFront,
+            cardBack: req.body.cardBack,
+        });
+        await flashCard.save();
+        return res.send(flashCard);
+    } catch (ex) {
+        return res.status(500).send(`Internal Server Error: ${ex}`);
+    }
+});
 
 
 module.exports = router;
