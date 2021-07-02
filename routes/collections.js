@@ -13,11 +13,12 @@ router.get('/', async (req, res) => {
 });
 
 // Get card decks by id
-router.get('/:id', async (req, res) => {
+router.get('/:deckId', async (req, res) => {
    try {
-      const cardDeck = await CardDeck.findById(req.params.id);
+      const cardDeck = await CardDeck.findById(req.params.deckId);
+      console.log(cardDeck);
       if (!cardDeck)
-         return res.status(400).send(`The card deck with id "${req.params.id}" d
+         return res.status(400).send(`The card deck with id "${req.params.deckId}" d
    oes not exist.`);
       return res.send(cardDeck);
    } catch (ex) {
@@ -125,11 +126,16 @@ router.post('/:deckId/cards/:cardId', async (req, res) => {
          return res.status(400).send(`The flashcard with id "${req.params.cardId}" d
    oes not exist.`);
 
+      const { error } = validateFlashCard(req.body);
+      if (error)
+         return res.status(400).send(error);
+
       // store changes to flashcard
-      //cardDeck[flashCardIndex].cardFront = req.body.cardFront;
-      //cardDeck[flashCardIndex].cardBack = req.body.cardBack;
-      console.log(cardDeck[flashCardIndex])
-      //await cardDeck.save();
+      cardDeck.cards[flashCardIndex].cardFront = req.body.cardFront;
+      cardDeck.cards[flashCardIndex].cardBack = req.body.cardBack;
+
+      console.log(cardDeck.cards[flashCardIndex])
+      await cardDeck.save();
 
       return res.send(cardDeck[flashCardIndex]);
    } catch (ex) {
