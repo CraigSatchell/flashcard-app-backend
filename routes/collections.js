@@ -80,7 +80,7 @@ router.get('/:deckId/cards/:cardId', async (req, res) => {
    }
 });
 
-// Add new flashcard to selected card deck
+// add flash card to deck
 router.post('/:deckId/cards', async (req, res) => {
    try {
       const cardDeck = await CardDeck.findById(req.params.deckId);
@@ -113,7 +113,7 @@ router.post('/:deckId/cards', async (req, res) => {
 
 
 // Get flashcard collection by cardDeck & flashCard id and update flashCard
-router.post('/:deckId/cards/:cardId', async (req, res) => {
+router.put('/:deckId/cards/:cardId', async (req, res) => {
    try {
       const cardDeck = await CardDeck.findById(req.params.deckId);
       if (!cardDeck)
