@@ -112,6 +112,38 @@ router.post('/:deckId/cards', async (req, res) => {
 });
 
 
+// delete flash card from deck
+router.delete('/:deckId/cards/:cardId', async (req, res) => {
+   try {
+      const cardDeck = await CardDeck.findById(req.params.deckId);
+      if (!cardDeck)
+         return res.status(400).send(`The card deck with id "${req.params.deckId}" d
+   oes not exist.`);
+
+      const flashCardIndex = cardDeck.cards.findIndex((card) => card._id == req.params.cardId);
+
+      if (flashCardIndex == -1)
+         return res.status(400).send(`The flashcard deck with id "${req.params.deckId}" d
+oes not exist.`);
+
+      // delete flash card from deck
+      const deletedCard = cardDeck.cards[flashCardIndex];
+      cardDeck.cards.splice(flashCardIndex, 1);
+
+      // save updates
+      await cardDeck.save();
+
+
+      return res.send(deletedCard);
+   } catch (ex) {
+      return res.status(500).send(`Internal Server Error: ${ex}`);
+   }
+});
+
+
+
+
+
 // Get flashcard collection by cardDeck & flashCard id and update flashCard
 router.put('/:deckId/cards/:cardId', async (req, res) => {
    try {
