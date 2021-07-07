@@ -5,8 +5,8 @@ const Joi = require('joi');
 
 // Define cardDeck schema and data validation
 const flashCardSchema = new mongoose.Schema({
-    cardFront: { type: String, required: true, minlength: 15, maxlength: 255 },
-    cardBack: { type: String, required: true, minlength: 2, maxlength: 255 },
+    cardFront: { type: String, required: true, minlength: 3, maxlength: 255 },
+    cardBack: { type: String, required: true, minlength: 3, maxlength: 255 },
     dateModified: { type: Date, default: Date.now },
 });
 
@@ -14,8 +14,8 @@ const FlashCard = mongoose.model('FlashCard', flashCardSchema);
 
 function validateFlashCard(flashCard) {
     const schema = Joi.object({
-        cardFront: Joi.string().min(15).max(255).required(),
-        cardBack: Joi.string().min(2).max(255).required(),
+        cardFront: Joi.string().min(3).max(255).required(),
+        cardBack: Joi.string().min(3).max(255).required(),
     });
     return schema.validate(flashCard);
 }
